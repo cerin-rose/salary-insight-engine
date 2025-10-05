@@ -1,38 +1,53 @@
-import os
+# src/fetch_salary_api.py
+import os, time, requests, pandas as pd
 from dotenv import load_dotenv
-import requests
-import pandas as pd
-
-# Load API key from .env
 load_dotenv()
 
-API_KEY = os.getenv("RAPIDAPI_KEY")
-API_HOST = os.getenv("RAPIDAPI_HOST")
-
-url = "https://job-salary-data.p.rapidapi.com/company-job-salary"
-
-querystring = {
-    "company": "Amazon",
-    "job_title": "software developer",
-    "location_type": "ANY",
-    "years_of_experience": "ALL"
+API_URL = "https://job-salary-data.p.rapidapi.com/company-job-salary"
+HEADERS = {
+    "x-rapidapi-key": os.getenv("RAPIDAPI_KEY", "PASTE_KEY_HERE"),
+    "x-rapidapi-host": "job-salary-data.p.rapidapi.com",
 }
 
-headers = {
-    "x-rapidapi-key": API_KEY,
-    "x-rapidapi-host": API_HOST
-}
+primary = [
+    ("Amazon", "Software Engineer"),
+    ("Google", "Data Scientist"),
+    ("Apple", "Machine Learning Engineer"),
+    ("Microsoft", "Data Analyst"),
+    ("Netflix", "Backend Developer"),
+]
+fallback = [
+    ("Meta", "Software Engineer"),
+    ("Amazon", "Data Scientist"),
+    ("Google", "ML Engineer"),
+    ("Apple", "Data Analyst"),
+    ("Microsoft", "Backend Developer"),
+]
 
-response = requests.get(url, headers=headers, params=querystring)
-data = response.json()
-print("Raw JSON:\n", data)
+def fetch(queries):
+    rows = []
+    for company, role in queries:
+        params = {"company": company, "job_title": role, "location": "United States"}
+        print(f"→ {company} · {role}")
+        try:
+            r = requests.get(API_URL, headers=HEADERS, params=params, timeout=20)
+            r.raise_for_status()
+            payload = r.json()
+            rows.extend(payload.get("data", []))
+        except Exception as e:
+            print("   ⚠️  skipped:", e)
+        time.sleep(1)
+    return rows
 
-# Convert to DataFrame if possible
-if isinstance(data, dict):
-    df = pd.json_normalize(data)
-else:
-    df = pd.DataFrame(data)
+rows = fetch(primary)
+if len(rows) < 5:
+    print("…less than 5 rows, trying fallback queries")
+    rows += fetch(fallback)
+
+df = pd.DataFrame(rows).drop_duplicates(
+    subset=["company","job_title","location","median_salary"], keep="first"
+).head(5)
 
 os.makedirs("data/raw", exist_ok=True)
 df.to_csv("data/raw/api_salary_data.csv", index=False)
-print("Saved to data/raw/api_salary_data.csv")
+print(f"✅ saved {len(df)} rows → data/raw/api_salary_data.csv")

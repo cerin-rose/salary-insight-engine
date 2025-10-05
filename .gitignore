@@ -1,10 +1,14 @@
+# Ignore virtual env and system files
 .venv/
 __pycache__/
+*.pyc
+
+# Ignore environment and API secrets
 .env
+*.log
+
+# Ignore data and model artifacts (optional)
 data/raw/
 data/processed/
 data/enhanced/
-logs/
 models/
-*.pkl
-*.pyc

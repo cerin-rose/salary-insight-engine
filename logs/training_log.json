@@ -1,0 +1,1 @@
+{"timestamp": "2025-10-05 18:49:22", "rows": 5, "features": ["job_title", "company", "location"], "r2_holdout": null, "mae_holdout": null, "r2_cv": NaN}
