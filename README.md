@@ -1,19 +1,19 @@
-# 💼 Salary Insight Engine
+# Salary Insight Engine
 
 An intelligent salary prediction dashboard
 that uses real-time salary data from APIs and machine learning to estimate
 salaries by job title, company, location, and experience.
 
-## 🚀 Overview
+## Overview
 
 Salary Insight Engine is a mini end-to-end
 ML project built with public API data collection, automated data cleaning,
 exploratory data analysis, and a linear regression model served through an
 interactive Streamlit dashboard.
 
-## 🧠 Architecture
+## Architecture
 
-📦 salary-insight-engine
+ salary-insight-engine
 
 ├── data/
 
@@ -96,7 +96,7 @@ Predicted Salary |
 
 | Software Developer | Amazon | United States | 💰 $225,724.70 |
 
-## 🧠 Machine Learning Stages
+## Machine Learning Stages
 
 | Stage               | Task                       | Tools                 |
 | ------------------- | -------------------------- | --------------------- |
@@ -107,7 +107,7 @@ Predicted Salary |
 | Model Training      | Linear Regression          | scikit-learn          |
 | Deployment          | Interactive app            | Streamlit             |
 
-## 🌟 Future Enhancements
+## Future Enhancements
 
 - Add SHAP explainability
 - Integrate Snowflake / BigQuery
@@ -115,14 +115,5 @@ Predicted Salary |
 - Add CI/CD pipeline
 - Build salary trend visualizations
 
-## 🧑‍💻 Author
 
-👩‍💼 Cerin Rose Chelladurai
 
-Master’s in Information Systems @ Binghamton University
-
-📍 Passionate about AI, Data Engineering, and Building Real-World
-Systems
-
-🔗 LinkedIn: https://linkedin.com/in/cerin-rose | GitHub:
-https://github.com/cerin-rose
